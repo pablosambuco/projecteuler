@@ -9,21 +9,9 @@
 # Find D(200!,1012) mod (109+7).
 
 require 'prime'
-require 'mathn'
+require_relative 'factorial'
 
 def br; "\n"; end
-
-def factorial(n)
-   if n == 0
-      1
-   else
-      if n> 0
-         n * factorial(n-1)
-      else 
-         0
-      end
-   end   
-end
 
 def div(num)
   num.prime_division.inject(1){ |prod, n| prod *= n[1] + 1 } 
@@ -47,6 +35,6 @@ def D(m,n)
    res
 end
 
-#print D(factorial(3),10**2)
-#print D(factorial(4),10**6)
-print D(factorial(200),10**12) % (10**9 + 7)
+#print D(3.factorial,10**2)
+#print D(4.factorial,10**6)
+print D(200.factorial,10**12) % (10**9 + 7)
