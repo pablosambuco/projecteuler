@@ -9,7 +9,6 @@
 # Find D(200!,1012) mod (109+7).
 
 require 'prime'
-require_relative 'factorial'
 
 def br; "\n"; end
 
@@ -17,24 +16,40 @@ def div(num)
   num.prime_division.inject(1){ |prod, n| prod *= n[1] + 1 } 
 end
 
-def factors(n)
-   1.upto(Math.sqrt(n)).select {|i| (n % i).zero?}.inject([]) do |f, i| 
-      f << i
-      f << n / i unless i == n / i
-      f
-   end.sort
-end
-
-def D(m,n)
+def D2(m,n)
    res=0
-   for d in factors(m)
-      for k in 1..n
-         res=res + div(d*k)
-      end
-   end
+   factores(m).each { |d| (1..n).each { |k| res+=div(d*k)} }
    res
 end
 
-#print D(3.factorial,10**2)
-#print D(4.factorial,10**6)
-print D(200.factorial,10**12) % (10**9 + 7)
+def factores(x)
+   a=[1]
+   (1..x).each {
+      |y| 
+      a1=*a
+      a.concat(a1.map{|i|i*y})
+      y.prime_division.map{|n| n[0]}.select{|z| z!=y}.map{
+         |z| 
+         a.concat(a1.map{|i|i*z}.select{|n| n>y})
+      }
+   }
+   a.uniq.sort
+end
+
+#t0=Time.now
+##print D2(3,10**2).to_s + br
+#print D2(4,10**6).to_s + br
+##print (D2(200,10**12) % (10**9 + 7)).to_s + br
+#t1=Time.now
+#s=t1-t0  
+#print s.to_s + "s" + br
+
+(1..20).each {
+   |n|
+   print n.to_s + "\t" 
+   t0=Time.now
+   x=factores(n)
+   t1=Time.now
+   s=t1-t0  
+   print s.to_s + br
+}
