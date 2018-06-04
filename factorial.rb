@@ -138,29 +138,13 @@ end # x_apply_binary_operator_t1
 
 
 def i_factorial_t1(i_n)
-   if defined? KIBUVITS_b_DEBUG
-      if KIBUVITS_b_DEBUG
-         bn=binding()
-         # Allowing the i_n to be a Bignum is a bit crazy in 2014,
-         # but may be in the future that might not be that crazy.
-         kibuvits_typecheck bn, [Fixnum,Bignum], i_n
-         kibuvits_assert_is_smaller_than_or_equal_to(bn,0,i_n,
-         "\n GUID='4289c481-1793-4f01-b3e5-e2700090bed7'\n\n")
-      end # if
-   else
-      # It's up to the final implementers to figure out,
-      # what, if any, input verification must take place here,
-      # but, for the time being:
-      cl=i_n.class
-      if cl!=Integer
-            raise(Exception.new("i_n.class=="+cl.to_s+
-            ", but it is expected to be of some whole number type."))
-      end # if
-      if i_n<0
-         raise(Exception.new("i_n=="+i_n.to_s+" < 0 ,"+
-         "but factorials are defined for positive numbers."))
-      end # if
+   if i_n.class!=Integer
+      return nil
    end # if
+   if i_n<0
+      return nil
+   end # if
+
    i_out=1 # factorial(0)==1
    return i_out if i_n==0
    func_star=lambda do |x_a,x_b|
@@ -173,8 +157,7 @@ def i_factorial_t1(i_n)
    # Therefore, for i_n==2, ar_n==[1,2] .
    i_n.times{|i| ar_n<<(i+1)} # i starts from 0
    x_identity_element=1
-   i_out=x_apply_binary_operator_t1(
-   x_identity_element,ar_n,func_star)
+   i_out=x_apply_binary_operator_t1(x_identity_element,ar_n,func_star)
    return i_out
 end # i_factorial_t1
 
